@@ -11,8 +11,9 @@ sudo docker run -p 5432:5432 --name postgres -e POSTGRES_USER=postgres -e POSTGR
 sudo docker run -d --hostname localhost --name rabbitmq -p 5672:5672 -p 5671:5671 -p 15672:15672 rabbitmq:3.6.6-management
 ```
 ## rabbit queues
+```
 docker exec rabbitmq su rabbitmq -- /usr/lib/rabbitmq/bin/rabbitmqctl list_queues
-
+```
 
 
 # build
