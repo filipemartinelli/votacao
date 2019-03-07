@@ -17,3 +17,6 @@ docker exec rabbitmq su rabbitmq -- /usr/lib/rabbitmq/bin/rabbitmqctl list_queue
 
 #run
 ./gradlew bootRun
+
+#swagger
+http://localhost:8080/swagger-ui.html#/

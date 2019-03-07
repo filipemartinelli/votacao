@@ -6,38 +6,51 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.fmc.votacao.model.Pauta;
-import br.com.fmc.votacao.repository.Pautas;
+import br.com.fmc.votacao.model.PautaV1;
+import br.com.fmc.votacao.model.PautaV2;
+import br.com.fmc.votacao.repository.PautasV1;
+import br.com.fmc.votacao.repository.PautasV2;
 import br.com.fmc.votacao.service.exception.PautaNotFoundException;
 
 @Service
 public class PautaService {
 
-	private Pautas pautas;
+	private PautasV1 pautas;
+	private PautasV2 pautasV2;
+	
 
 	@Autowired
-	public PautaService(Pautas pautas) {
+	public PautaService(PautasV1 pautas, PautasV2 pautasV2) {
 		this.pautas = pautas;
+		this.pautasV2 = pautasV2;
 	}
 
-	public Pauta save(final Pauta pauta) {
+	public PautaV1 save(final PautaV1 pauta) {
 		return pautas.save(pauta);
 	}
-
-	public List<Pauta> findAll() {
-		return pautas.findAll();
+	
+	public PautaV2 save(final PautaV2 pauta) {
+		return pautasV2.save(pauta);
 	}
 
-	public void delete(Pauta pauta) {
-		Optional<Pauta> pautaById = pautas.findById(pauta.getId());
+	public List<PautaV1> findAll() {
+		return pautas.findAll();
+	}
+	
+	public List<PautaV2> findAllV2() {
+		return pautasV2.findAll();
+	}
+
+	public void delete(PautaV1 pauta) {
+		Optional<PautaV1> pautaById = pautas.findById(pauta.getId());
 		if (!pautaById.isPresent()) {
 			throw new PautaNotFoundException();
 		}
 		pautas.delete(pauta);
 	}
 
-	public Pauta findById(Long id) {
-		Optional<Pauta> findById = pautas.findById(id);
+	public PautaV1 findById(Long id) {
+		Optional<PautaV1> findById = pautas.findById(id);
 		if(!findById.isPresent()){
 			throw new PautaNotFoundException();
 		}

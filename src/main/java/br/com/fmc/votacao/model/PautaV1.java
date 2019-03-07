@@ -1,14 +1,14 @@
 package br.com.fmc.votacao.model;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,20 +18,19 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Sessao {
+@Table(name = "Pauta")
+public class PautaV1 implements Serializable{
+
+	private static final long serialVersionUID = 3077439391578014752L;
 
 	@Id
-	@SequenceGenerator(name = "sessao_seq", sequenceName = "sessao_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sessao_seq")
+	@SequenceGenerator(name = "pauta_seq", sequenceName = "pauta_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pauta_seq")
 	@EqualsAndHashCode.Include
 	private Long id;
 
-	private LocalDateTime dataInicio;
-
-	private Long minutosValidade;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private PautaV1 pauta;
+	@NotBlank(message = "pauta-1")
+	private String nome;
 
 
 	@JsonIgnore

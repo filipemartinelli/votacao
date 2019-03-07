@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,7 +18,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Pauta implements Serializable{
+@Table(name = "Pauta")
+public class PautaV2 implements Serializable{
 
 	private static final long serialVersionUID = 3077439391578014752L;
 
@@ -30,6 +32,7 @@ public class Pauta implements Serializable{
 	@NotBlank(message = "pauta-1")
 	private String nome;
 
+	private Integer version;
 
 	@JsonIgnore
 	public boolean isNew() {

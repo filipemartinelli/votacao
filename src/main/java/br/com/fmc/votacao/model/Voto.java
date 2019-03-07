@@ -35,7 +35,7 @@ public class Voto {
 	
 	@NotNull(message = "voto-3")
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Pauta pauta;
+	private PautaV1 pauta;
 	
     @JsonIgnore
     public boolean isNew() {

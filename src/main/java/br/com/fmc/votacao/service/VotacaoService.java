@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.fmc.votacao.dto.VotacaoDto;
-import br.com.fmc.votacao.model.Pauta;
+import br.com.fmc.votacao.model.PautaV1;
 import br.com.fmc.votacao.model.Voto;
 import br.com.fmc.votacao.repository.Sessoes;
 import br.com.fmc.votacao.repository.Votos;
@@ -73,7 +73,7 @@ public class VotacaoService {
 			throw new VotacaoNotFoundException();
 		}
 		
-		Pauta pauta = votosByPauta.get().iterator().next().getPauta();
+		PautaV1 pauta = votosByPauta.get().iterator().next().getPauta();
 		
 		Long totalSessoes = sessoes.countByPautaId(pauta.getId());
 		

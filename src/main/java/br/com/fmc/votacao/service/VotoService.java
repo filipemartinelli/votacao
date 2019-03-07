@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.fmc.votacao.dto.CpfValidationDto;
 import br.com.fmc.votacao.dto.VotacaoDto;
-import br.com.fmc.votacao.model.Pauta;
+import br.com.fmc.votacao.model.PautaV1;
 import br.com.fmc.votacao.model.Sessao;
 import br.com.fmc.votacao.model.Voto;
 import br.com.fmc.votacao.mq.Sender;
@@ -75,7 +75,7 @@ public class VotoService {
 		}
 	}
 
-	private void sendMessage(Pauta pauta) {
+	private void sendMessage(PautaV1 pauta) {
 		VotacaoDto votacaoPauta = votacaoService.buildVotacaoPauta(pauta.getId());
 		sender.send(votacaoPauta);
 	}
