@@ -37,7 +37,7 @@ docker exec rabbitmq su rabbitmq -- /usr/lib/rabbitmq/bin/rabbitmqctl list_queue
 http://localhost:8080/swagger-ui.html#/
 ```
 
-## swagger
+## actuator
 ```
 http://localhost:8080/actuator/health
 ```
