@@ -44,7 +44,7 @@ public class VotoService {
 	private Sender sender;
 
 	private VotacaoService votacaoService;
-	
+
 	@Autowired
 	public VotoService(Votos votos, RestTemplate restTemplate, Sender sender, VotacaoService votacaoService) {
 		this.votos = votos;
@@ -58,16 +58,19 @@ public class VotoService {
 		return votos.save(voto);
 	}
 
-	private void verifyVoto(final Sessao sessao, final Voto voto) {
+	protected void verifyVoto(final Sessao sessao, final Voto voto) {
 
 		LocalDateTime dataLimite = sessao.getDataInicio().plusMinutes(sessao.getMinutosValidade());
 		if (LocalDateTime.now().isAfter(dataLimite)) {
 			sendMessage(voto.getPauta());
 			throw new SessaoTimeOutException();
 		}
-		
-		cpfAbleToVote(voto);
 
+		cpfAbleToVote(voto);
+		votoAlreadyExists(voto);
+	}
+
+	protected void votoAlreadyExists(final Voto voto) {
 		Optional<Voto> votoByCpfAndPauta = votos.findByCpfAndPautaId(voto.getCpf(), voto.getPauta().getId());
 
 		if (votoByCpfAndPauta.isPresent()) {
@@ -80,7 +83,7 @@ public class VotoService {
 		sender.send(votacaoPauta);
 	}
 
-	private void cpfAbleToVote(final Voto voto) {
+	protected void cpfAbleToVote(final Voto voto) {
 		ResponseEntity<CpfValidationDto> cpfValidation = getCpfValidation(voto);
 		if (HttpStatus.OK.equals(cpfValidation.getStatusCode())) {
 			if (CPF_UNABLE_TO_VOTE.equalsIgnoreCase(cpfValidation.getBody().getStatus())) {
@@ -91,13 +94,13 @@ public class VotoService {
 		}
 	}
 
-	private ResponseEntity<CpfValidationDto> getCpfValidation(final Voto voto) {
+	protected ResponseEntity<CpfValidationDto> getCpfValidation(final Voto voto) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<String>(headers);
-		
-		return restTemplate.exchange(urlCpfValidator.concat("/").concat(voto.getCpf()), HttpMethod.GET, entity, CpfValidationDto.class);
+		return restTemplate.exchange(urlCpfValidator.concat("/").concat(voto.getCpf()), HttpMethod.GET, entity,
+				CpfValidationDto.class);
 	}
 
 	public List<Voto> findAll() {
@@ -120,6 +123,10 @@ public class VotoService {
 		}
 
 		return findByPautaId.get();
+	}
+
+	public void setUrlCpfValidator(String urlCpfValidator) {
+		this.urlCpfValidator = urlCpfValidator;
 	}
 
 }
